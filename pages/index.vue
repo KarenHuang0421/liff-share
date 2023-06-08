@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap center">
+  <div class="wrap center d-col">
     <h1>hello world!</h1>
     <span>
       {{ form.userId }}
@@ -7,18 +7,140 @@
     <span>
       {{ form.displayName }}
     </span>
+    <span>{{ form.url }}</span>
+    <!-- <a href="https://lin.ee/wMD9Hbf"
+      ><img
+        src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
+        alt="加入好友"
+        height="36"
+        border="0"
+    /></a> -->
   </div>
 </template>
 <script setup>
-const form = ref({ userId: "", displayName: "" });
-onMounted(() => {
-  form.value = getLineProfile();
+const route = useRoute()
+const form = ref({ userId: "", displayName: "", url: "" });
+const { $toggleLogin, $toggleShare } = useNuxtApp();
+
+
+onMounted(async () => {
+    form.value.url = route.path;
+    // try {
+    //   form.value = await $toggleLogin();
+    //   await $toggleShare(picker);
+    // } catch (e) {
+    //   console.error(e);
+    // }
 });
 
-const getLineProfile = async () => {
-  const { $toggleLiffPlugin } = useNuxtApp();
-  const profile = await $toggleLiffPlugin();
-  return profile;
+const picker = {
+  type: "bubble",
+  body: {
+    type: "box",
+    layout: "vertical",
+    contents: [
+      {
+        type: "image",
+        position: "absolute",
+        margin: "0px",
+        aspectMode: "cover",
+        offsetTop: "0px",
+        offsetStart: "0px",
+        size: "full",
+        url: "https://i.ibb.co/0MLTQkg/pattern.png",
+        offsetBottom: "0px",
+        offsetEnd: "0px",
+      },
+      {
+        type: "box",
+        layout: "vertical",
+        contents: [
+          {
+            type: "image",
+            url: "https://i.ibb.co/48rD51s/logo.png",
+            aspectMode: "fit",
+            align: "start",
+            aspectRatio: "15:2",
+          },
+        ],
+      },
+      {
+        type: "box",
+        layout: "vertical",
+        contents: [
+          {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "text",
+                text: "いらっしゃいませ!",
+                color: "#F64453",
+                weight: "bold",
+                size: "24px",
+              },
+              {
+                type: "text",
+                text: "ゆうえんち",
+                color: "#FFFFFF",
+                weight: "bold",
+                size: "42px",
+              },
+            ],
+            paddingTop: "0px",
+            offsetTop: "16px",
+          },
+          {
+            type: "text",
+            text: "「ゆうえんち」の公式LINEアカウントに参加して、最新のゲーム情報や特典イベントを手に入れましょう！",
+            color: "#FFFFFF",
+            weight: "bold",
+            size: "10px",
+            wrap: true,
+            align: "center",
+            offsetTop: "8px",
+          },
+          {
+            type: "box",
+            layout: "horizontal",
+            contents: [
+              {
+                type: "button",
+                action: {
+                  type: "uri",
+                  label: "今すぐ参加",
+                  uri: "https://lin.ee/wMD9Hbf",
+                },
+                color: "#FFFFFF",
+                height: "sm",
+                style: "link",
+              },
+            ],
+            backgroundColor: "#FF4655",
+            height: "35px",
+            cornerRadius: "8px",
+            paddingAll: "0px",
+            alignItems: "center",
+            justifyContent: "center",
+          },
+        ],
+        height: "100%",
+        justifyContent: "space-around",
+        paddingStart: "24px",
+        paddingEnd: "24px",
+        flex: 1,
+        alignItems: "center",
+      },
+    ],
+    background: {
+      type: "linearGradient",
+      angle: "126.12deg",
+      startColor: "#2B2F45",
+      endColor: "#C44051",
+    },
+    maxHeight: "300px",
+    height: "300px",
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -33,8 +155,7 @@ const getLineProfile = async () => {
   }
   span {
     color: #e6e6e6;
-    font-size: 32px;
-
+    font-size: 16px;
   }
 }
 </style>
