@@ -28,4 +28,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/global.css", "~/assets/css/base.css"],
   plugins: ["~/plugins/liff.js"],
+  runtimeConfig: {
+    public: {
+      lineLiffId: "1657931434-lbwp08oO"
+    }
+  }
 })
