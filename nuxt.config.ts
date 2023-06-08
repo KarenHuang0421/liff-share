@@ -26,5 +26,6 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
+  css: ["~/assets/css/global.css", "~/assets/css/base.css"],
   plugins: ["~/plugins/liff.js"],
 })
