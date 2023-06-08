@@ -7,7 +7,11 @@
     <span>
       {{ form.displayName }}
     </span>
-    <span>{{ form.url }}</span>
+    <div class="d-col" style="{ max-width: 200px;padding: '0 8px' }">
+      <span>{{ hostname }}</span>
+      <span>{{ url }}</span>
+      <span>{{ path }}</span>
+    </div>
     <!-- <a href="https://lin.ee/wMD9Hbf"
       ><img
         src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
@@ -18,20 +22,31 @@
   </div>
 </template>
 <script setup>
-const route = useRoute()
+const route = useRoute();
 const form = ref({ userId: "", displayName: "", url: "" });
+const hostname = ref(null);
+const url = ref(null);
+const path = ref(null);
 const { $toggleLogin, $toggleShare } = useNuxtApp();
 
-
-onMounted(async () => {
-    form.value.url = route.path;
-    // try {
-    //   form.value = await $toggleLogin();
-    //   await $toggleShare(picker);
-    // } catch (e) {
-    //   console.error(e);
-    // }
+onMounted(() => {
+  hostname.value = "hostname: " + window.location.hostname;
+  url.value = "url: " + window.location.href;
+  path.value = "path: " + route.path;
+  setTimeout(() => getLiff(), 2000);
 });
+
+const getLiff = async () => {
+  try {
+    form.value = await $toggleLogin();
+    await $toggleShare(picker);
+    hostname.value = "hostname: " + window.location.hostname;
+    url.value = "url: " + window.location.href;
+    path.value = "path: " + route.path;
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const picker = {
   type: "bubble",
@@ -156,6 +171,7 @@ const picker = {
   span {
     color: #e6e6e6;
     font-size: 16px;
+    word-break: break-all;
   }
 }
 </style>

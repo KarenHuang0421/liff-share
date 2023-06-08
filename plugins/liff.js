@@ -76,7 +76,7 @@ export default defineNuxtPlugin(() => {
           )
           .then(function (res) {
             if (res) {
-              liff.closeWindow();
+              // liff.closeWindow();
                // succeeded in sending a message through TargetPicker
               console.log(`[${res.status}] Message sent!`);
             } else {
