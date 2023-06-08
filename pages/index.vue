@@ -7,11 +7,6 @@
     <span>
       {{ form.displayName }}
     </span>
-    <div class="d-col" style="{ max-width: 200px;padding: '0 8px' }">
-      <span>{{ hostname }}</span>
-      <span>{{ url }}</span>
-      <span>{{ path }}</span>
-    </div>
     <!-- <a href="https://lin.ee/wMD9Hbf"
       ><img
         src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
@@ -30,9 +25,6 @@ const path = ref(null);
 const { $toggleLogin, $toggleShare } = useNuxtApp();
 
 onMounted(() => {
-  hostname.value = "hostname: " + window.location.hostname;
-  url.value = "url: " + window.location.href;
-  path.value = "path: " + route.path;
   setTimeout(() => getLiff(), 2000);
 });
 
@@ -40,9 +32,6 @@ const getLiff = async () => {
   try {
     form.value = await $toggleLogin();
     await $toggleShare(picker);
-    hostname.value = "hostname: " + window.location.hostname;
-    url.value = "url: " + window.location.href;
-    path.value = "path: " + route.path;
   } catch (e) {
     console.error(e);
   }
