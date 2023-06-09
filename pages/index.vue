@@ -1,57 +1,51 @@
 <template>
-  <div class="wrap center d-col">
-    <h1>hello world!</h1>
-    <span>
-      {{ form.userId }}
-    </span>
-    <span>
-      {{ form.displayName }}
-    </span>
-    <span>{{ url }} </span>
+  <div class="wrap d-col center">
+    <h1>Share</h1>
+    <span>{{ page }} {{ time }}</span>
     <a :href="`https://line.me/R/ti/p/@161uojua`">test @161uojua</a>
-    <!-- TEST -->
-    <a href="https://lin.ee/yYQBlWv"
-      ><img
-        src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
-        alt="加入好友"
-        height="36"
-        border="0"
-    /></a>
-    <!-- YUENCHI -->
-    <!-- <a href="https://lin.ee/wMD9Hbf"
-      ><img
-        src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
-        alt="加入好友"
-        height="36"
-        border="0"
-    /></a> -->
-    <div class="d-col" v-if="form.isFriend != null">
-      <span v-if="!form.isFriend">尚未成為好友</span>
-      <span v-else>已加入！</span>
-    </div>
   </div>
 </template>
 <script setup>
-const form = ref({ userId: "", displayName: "", isFriend: null });
-const { $toggleLogin, $toggleShare } = useNuxtApp();
-const url = ref("");
+const {
+  $toggleGetProfile,
+  $toggleShare,
+  $toggleLoginPromise,
+  $toggleSendMSg,
+  $isFriend,
+  $sleep,
+} = useNuxtApp();
+const page = ref(null);
+const time = ref(0);
 
 onMounted(() => {
-  url.value = window.location.href;
-  //   url.value = window.location.href?.split("?")?.[1];
-  setTimeout(() => getLiff(), 2000);
+  init();
 });
 
-const getLiff = async () => {
-  try {
-    form.value = await $toggleLogin();
-    url.value = window.location.href;
+const init = async () => {
+  await waitAddFriend(); // 等待用戶加入好友
+  showPage("main"); // 顯示主要頁面
+  //
+  $toggleGetProfile().then((res) =>
+    $toggleShare(picker(res.displayName, res.userId))
+  );
+};
 
-    if (form.value.isFriend)
-      await $toggleShare(picker(form.value.displayName, form.value.userId));
-  } catch (e) {
-    console.error(e);
+const waitAddFriend = async () => {
+  await $toggleLoginPromise(window.location);
+  if (await $isFriend()) return;
+
+  console.log("is friend ? ", await $isFriend());
+
+  showPage("follow");
+  while (true) {
+    await $sleep(5000);
+    time.value = JSON.parse(time.value) + 1;
+    if (await $isFriend()) return;
   }
+};
+
+const showPage = (val) => {
+  page.value = val;
 };
 
 const picker = (name, id) => ({
@@ -131,7 +125,7 @@ const picker = (name, id) => ({
                   type: "uri",
                   label: `${name} 今すぐ参加?`,
                   uri: "https://liff.line.me/1657931434-lbwp08oO?inviter=" + id,
-                  //   url: "https://e58c-2001-b011-80c0-1014-b58c-f81c-c91c-faeb.ngrok-free.app//share?id=" + id,
+                  //   url: "https://ca1f-2001-b011-80c0-1014-b58c-f81c-c91c-faeb.ngrok-free.app/share?id=" + id,
                 },
                 color: "#FFFFFF",
                 height: "sm",
