@@ -1,54 +1,26 @@
 <template>
-  <div class="wrap center d-col">
-    <h1>hello world!</h1>
-    <span>
-      {{ form.userId }}
-    </span>
-    <span>
-      {{ form.displayName }}
-    </span>
-    <span>{{ url }} </span>
-    <a :href="`https://line.me/R/ti/p/@161uojua`">test @161uojua</a>
-    <!-- TEST -->
-    <a href="https://lin.ee/yYQBlWv"
-      ><img
-        src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
-        alt="加入好友"
-        height="36"
-        border="0"
-    /></a>
-    <!-- YUENCHI -->
-    <!-- <a href="https://lin.ee/wMD9Hbf"
-      ><img
-        src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
-        alt="加入好友"
-        height="36"
-        border="0"
-    /></a> -->
-    <div class="d-col" v-if="form.isFriend != null">
-      <span v-if="!form.isFriend">尚未成為好友</span>
-      <span v-else>已加入！</span>
-    </div>
-  </div>
+  <div class="wrap center d-col">loading...</div>
 </template>
 <script setup>
 const form = ref({ userId: "", displayName: "", isFriend: null });
 const { $toggleLogin, $toggleShare } = useNuxtApp();
-const url = ref("");
+const runtimeConfig = useRuntimeConfig();
 
 onMounted(() => {
-  url.value = window.location.href;
-  //   url.value = window.location.href?.split("?")?.[1];
-  setTimeout(() => getLiff(), 2000);
+  //   setTimeout(() => getLiff(), 2000);
+  getLiff();
 });
 
 const getLiff = async () => {
   try {
     form.value = await $toggleLogin();
-    url.value = window.location.href;
 
     if (form.value.isFriend)
-      await $toggleShare(picker(form.value.displayName, form.value.userId));
+      await $toggleShare(
+        picker(form.value.displayName, form.value.userId),
+        "今すぐ参加!"
+      );
+    else window.location.href = "https://lin.ee/yYQBlWv";
   } catch (e) {
     console.error(e);
   }
@@ -129,8 +101,9 @@ const picker = (name, id) => ({
                 type: "button",
                 action: {
                   type: "uri",
-                  label: `${name} 今すぐ参加?`,
-                  uri: "https://liff.line.me/1657931434-lbwp08oO?inviter=" + id,
+                  label: "今すぐ参加",
+                  uri: `https://liff.line.me/${runtimeConfig.public.lineLiffId}?inviter=${id}`,
+                  //   label: `${name} 今すぐ参加?`,
                   //   url: "https://e58c-2001-b011-80c0-1014-b58c-f81c-c91c-faeb.ngrok-free.app//share?id=" + id,
                 },
                 color: "#FFFFFF",
@@ -167,7 +140,7 @@ const picker = (name, id) => ({
 </script>
 <style lang="scss" scoped>
 .wrap {
-  background-color: black;
+  //   background-color: black;
   font-weight: bold;
   height: 100vh;
 

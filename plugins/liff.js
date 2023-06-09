@@ -11,52 +11,39 @@ export default defineNuxtPlugin(() => {
         await liff.init({ liffId: runtimeConfig.public.lineLiffId });
 
         if (!liff.isInClient()) {
-          console.log("inclient");
           if (!liff.isLoggedIn()) {
-            console.log("login");
             liff.login();
           }
         }
         //initializeApp
-        const state = liff.state;
-        const browserLanguage = liff.getLanguage();
-        const sdkVersion = liff.getVersion();
-        const lineVersion = liff.getLineVersion();
-        const isLoggedIn = liff.isLoggedIn();
-        const isApiAvailable = liff.isApiAvailable("shareTargetPicker");
-        const isFriend = await liff.getFriendship()
-        const deviceOS = liff.getOS();
-        const id = liff.getAId();
+        // const state = liff.state;
+        // const browserLanguage = liff.getLanguage();
+        // const sdkVersion = liff.getVersion();
+        // const lineVersion = liff.getLineVersion();
+        // const isLoggedIn = liff.isLoggedIn();
+        // const isApiAvailable = liff.isApiAvailable("shareTargetPicker");
+        const isFriend = await liff.getFriendship();
+        // const deviceOS = liff.getOS();
+        // const id = liff.getAId();
 
-        liff
-          .getFriendship()
-          .then((data) => {
-            console.log(data);
-            if (data.friendFlag) {
-              // something you want to do
-            }
-          })
-          .catch((e) => console.log(e));
-
-        console.log({
-          state,
-          browserLanguage,
-          sdkVersion,
-          lineVersion,
-          isApiAvailable,
-          isLoggedIn,
-          deviceOS,
-          id,
-        });
+        // console.log({
+        //   state,
+        //   browserLanguage,
+        //   sdkVersion,
+        //   lineVersion,
+        //   isApiAvailable,
+        //   isLoggedIn,
+        //   deviceOS,
+        //   id,
+        // });
 
         return liff
           .getProfile()
           .then((res) => {
-            console.log(res);
             return {
               userId: res?.userId,
               displayName: res?.displayName,
-              isFriend: isFriend?.friendFlag
+              isFriend: isFriend?.friendFlag,
             };
           })
           .catch((e) => {
@@ -64,7 +51,7 @@ export default defineNuxtPlugin(() => {
             return null;
           });
       },
-      toggleShare: async (contents) => {
+      toggleShare: async (contents, text) => {
         // const runtimeConfig = useRuntimeConfig();
         // await liff.init({ liffId: runtimeConfig.public.lineLiffId });
 
@@ -73,7 +60,7 @@ export default defineNuxtPlugin(() => {
             [
               {
                 type: "flex",
-                altText: "今すぐ参加!",
+                altText: text,
                 contents,
               },
             ],
@@ -83,16 +70,16 @@ export default defineNuxtPlugin(() => {
           )
           .then(function (res) {
             if (res) {
-              // liff.closeWindow();
-               // succeeded in sending a message through TargetPicker
+              liff.closeWindow();
+              // succeeded in sending a message through TargetPicker
               console.log(`[${res.status}] Message sent!`);
             } else {
+              liff.closeWindow();
               // sending message canceled
               console.log("TargetPicker was closed!");
             }
           })
           .catch(function (error) {
-            console.log(error);
             // something went wrong before sending a message
             console.log("something wrong happen");
           });
