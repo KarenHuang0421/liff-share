@@ -18,11 +18,13 @@ export default defineNuxtPlugin(() => {
           }
         }
         //initializeApp
+        const state = liff.state;
         const browserLanguage = liff.getLanguage();
         const sdkVersion = liff.getVersion();
         const lineVersion = liff.getLineVersion();
         const isLoggedIn = liff.isLoggedIn();
         const isApiAvailable = liff.isApiAvailable("shareTargetPicker");
+        const isFriend = await liff.getFriendship()
         const deviceOS = liff.getOS();
         const id = liff.getAId();
 
@@ -37,6 +39,7 @@ export default defineNuxtPlugin(() => {
           .catch((e) => console.log(e));
 
         console.log({
+          state,
           browserLanguage,
           sdkVersion,
           lineVersion,
@@ -53,6 +56,7 @@ export default defineNuxtPlugin(() => {
             return {
               userId: res?.userId,
               displayName: res?.displayName,
+              isFriend: isFriend?.friendFlag
             };
           })
           .catch((e) => {
@@ -61,6 +65,9 @@ export default defineNuxtPlugin(() => {
           });
       },
       toggleShare: async (contents) => {
+        // const runtimeConfig = useRuntimeConfig();
+        // await liff.init({ liffId: runtimeConfig.public.lineLiffId });
+
         liff
           .shareTargetPicker(
             [
