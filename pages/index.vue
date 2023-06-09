@@ -113,6 +113,7 @@ const picker = (name, id) => ({
             ],
             backgroundColor: "#FF4655",
             height: "35px",
+            width: '85%',
             cornerRadius: "8px",
             paddingAll: "0px",
             alignItems: "center",
