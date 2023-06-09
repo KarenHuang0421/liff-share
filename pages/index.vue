@@ -20,7 +20,7 @@ const getLiff = async () => {
         picker(form.value.displayName, form.value.userId),
         "今すぐ参加!"
       );
-    else window.location.href = "https://lin.ee/yYQBlWv";
+    else window.location.href = "https://lin.ee/wMD9Hbf"; //get from https://manager.line.biz/account/{YOUR_OA_LINE_ID}/gainfriends/add-friend-url
   } catch (e) {
     console.error(e);
   }
