@@ -1,11 +1,13 @@
 <template>
   <div class="wrap center d-col">
-    <span> loading... </span>
+    <span> loading... || {{ msg }}</span>
   </div>
 </template>
 <script setup>
 const form = ref({ userId: "", displayName: "", isFriend: null });
 const { $toggleLogin, $toggleShare } = useNuxtApp();
+const params = ref(null);
+const msg = ref(null);
 
 onMounted(() => {
   //   setTimeout(() => getLiff(), 2000);
@@ -13,8 +15,12 @@ onMounted(() => {
 });
 
 const getLiff = async () => {
+  params.value = window.location.search;
+  if (params.value.length) params.value = params.value.split("=")[1];
+
   try {
     form.value = await $toggleLogin();
+    step.value = 1;
 
     if (form.value.isFriend) {
       await $toggleShare(
@@ -22,8 +28,11 @@ const getLiff = async () => {
         "今すぐ参加!"
       );
     } else {
-      let params = window.location.search;
-      await postReferal(params.split("=")[1], form.value.userId);
+      await postReferal(params, form.value.userId)
+        .then((res) => (msg.value = "success"))
+        .catch((e) => (msg.value = "failed"));
+
+        msg.value= 'what'
 
       setTimeout(() => {
         window.location.href = "https://lin.ee/wMD9Hbf"; //get from https://manager.line.biz/account/{YOUR_OA_LINE_ID}/gainfriends/add-friend-url
@@ -31,6 +40,7 @@ const getLiff = async () => {
       //
     }
   } catch (e) {
+    msg.value = 'wrong'
     console.error(e);
   }
 };
