@@ -120,7 +120,7 @@ const picker = (name, id) => ({
                   label: "今すぐ参加",
                   // uri: `https://liff.line.me/${runtimeConfig.public.lineLiffId}?key=${id}#URL-fragment`, // have trouble get 'id'
                   // label: `${name} 今すぐ参加?`,
-                  uri: `https://vercel.com/karenhuang0421/liff-share?inviter=${id}`, //use outside url instead to get params
+                  uri: `https://liff-share.vercel.app?inviter=${id}`, //use outside url instead to get params
                 },
                 color: "#FFFFFF",
                 height: "sm",
