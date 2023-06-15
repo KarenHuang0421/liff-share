@@ -1,6 +1,8 @@
 <template>
   <div class="wrap center d-col">
-    <span> loading... || {{ msg }}</span>
+    <span> loading... </span>
+    <!-- FOR DEBUG -->
+    <!-- <span>{{ msg }}</span> -->
   </div>
 </template>
 <script setup>
@@ -18,7 +20,7 @@ const getLiff = async () => {
   try {
     params.value = window.location.search;
     msg.value = params.value;
-    
+
     if (params.value.length) params.value = params.value.split("=")[1];
   } catch {
     msg.value = "wrong at params";
@@ -34,8 +36,8 @@ const getLiff = async () => {
       );
     } else {
       await postReferal(params, form.value.userId)
-        .then((res) => (msg.value = "success"))
-        .catch((e) => (msg.value = "failed"));
+        .then(() => (msg.value = "success"))
+        .catch(() => (msg.value = "failed"));
 
       msg.value = "pass";
 
