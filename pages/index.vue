@@ -6,7 +6,6 @@
 <script setup>
 const form = ref({ userId: "", displayName: "", isFriend: null });
 const { $toggleLogin, $toggleShare } = useNuxtApp();
-const runtimeConfig = useRuntimeConfig();
 
 onMounted(() => {
   //   setTimeout(() => getLiff(), 2000);
@@ -23,7 +22,8 @@ const getLiff = async () => {
         "今すぐ参加!"
       );
     } else {
-      await postReferal(params.value.split("=")[1], form.value.userId);
+      let params = window.location.search;
+      await postReferal(params.split("=")[1], form.value.userId);
 
       setTimeout(() => {
         window.location.href = "https://lin.ee/wMD9Hbf"; //get from https://manager.line.biz/account/{YOUR_OA_LINE_ID}/gainfriends/add-friend-url
