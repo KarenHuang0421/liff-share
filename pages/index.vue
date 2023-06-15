@@ -15,8 +15,14 @@ onMounted(() => {
 });
 
 const getLiff = async () => {
-  params.value = window.location.search;
-  if (params.value.length) params.value = params.value.split("=")[1];
+  try {
+    params.value = window.location.search;
+    msg.value = params.value;
+    
+    if (params.value.length) params.value = params.value.split("=")[1];
+  } catch {
+    msg.value = "wrong at params";
+  }
 
   try {
     form.value = await $toggleLogin();
@@ -31,7 +37,7 @@ const getLiff = async () => {
         .then((res) => (msg.value = "success"))
         .catch((e) => (msg.value = "failed"));
 
-        msg.value= 'pass'
+      msg.value = "pass";
 
       setTimeout(() => {
         window.location.href = "https://lin.ee/wMD9Hbf"; //get from https://manager.line.biz/account/{YOUR_OA_LINE_ID}/gainfriends/add-friend-url
@@ -39,7 +45,7 @@ const getLiff = async () => {
       //
     }
   } catch (e) {
-    msg.value = 'wrong'
+    msg.value = "wrong";
     console.error(e);
   }
 };
