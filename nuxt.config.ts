@@ -30,6 +30,7 @@ export default defineNuxtConfig({
   plugins: ["~/plugins/liff.js"],
   runtimeConfig: {
     public: {
+      // lineLiffId: "1657931434-lbwp08oO" //test line account
       lineLiffId: "1661275837-PmpLpWJJ"
     }
   }

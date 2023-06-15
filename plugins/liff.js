@@ -84,6 +84,21 @@ export default defineNuxtPlugin(() => {
             console.log("something wrong happen");
           });
       },
+      toggleSendMsg: async (id, myId) => {
+        liff
+          .sendMessages([
+            {
+              type: "text",
+              text: `received from: ${id}, my id: ${myId}`,
+            },
+          ])
+          .then(() => {
+            console.log("message sent");
+          })
+          .catch((err) => {
+            console.log("error", err);
+          });
+      },
     },
   };
 });

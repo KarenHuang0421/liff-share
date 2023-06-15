@@ -1,5 +1,7 @@
 <template>
-  <div class="wrap center d-col">loading...</div>
+  <div class="wrap center d-col">
+    <span> loading... </span>
+  </div>
 </template>
 <script setup>
 const form = ref({ userId: "", displayName: "", isFriend: null });
@@ -15,15 +17,29 @@ const getLiff = async () => {
   try {
     form.value = await $toggleLogin();
 
-    if (form.value.isFriend)
+    if (form.value.isFriend) {
       await $toggleShare(
         picker(form.value.displayName, form.value.userId),
         "今すぐ参加!"
       );
-    else window.location.href = "https://lin.ee/wMD9Hbf"; //get from https://manager.line.biz/account/{YOUR_OA_LINE_ID}/gainfriends/add-friend-url
+    } else {
+      await postReferal(params.value.split("=")[1], form.value.userId);
+
+      setTimeout(() => {
+        window.location.href = "https://lin.ee/wMD9Hbf"; //get from https://manager.line.biz/account/{YOUR_OA_LINE_ID}/gainfriends/add-friend-url
+      }, 800);
+      //
+    }
   } catch (e) {
     console.error(e);
   }
+};
+
+const postReferal = async (referalId, id) => {
+  let url = "https://vot.cuzzor.com/line/referral/" + referalId;
+  const data = await useFetch(url, { method: "PUT", body: { id } });
+  console.log(data); // for debug
+  return;
 };
 
 const picker = (name, id) => ({
@@ -102,9 +118,9 @@ const picker = (name, id) => ({
                 action: {
                   type: "uri",
                   label: "今すぐ参加",
-                  uri: `https://liff.line.me/${runtimeConfig.public.lineLiffId}?inviter=${id}`,
-                  //   label: `${name} 今すぐ参加?`,
-                  //   url: "https://e58c-2001-b011-80c0-1014-b58c-f81c-c91c-faeb.ngrok-free.app//share?id=" + id,
+                  // uri: `https://liff.line.me/${runtimeConfig.public.lineLiffId}?key=${id}#URL-fragment`, // have trouble get 'id'
+                  // label: `${name} 今すぐ参加?`,
+                  uri: `https://vercel.com/karenhuang0421/liff-share?inviter=${id}`, //use outside url instead to get params
                 },
                 color: "#FFFFFF",
                 height: "sm",
@@ -113,7 +129,7 @@ const picker = (name, id) => ({
             ],
             backgroundColor: "#FF4655",
             height: "35px",
-            width: '85%',
+            width: "85%",
             cornerRadius: "8px",
             paddingAll: "0px",
             alignItems: "center",
@@ -150,7 +166,8 @@ const picker = (name, id) => ({
     font-size: 64px;
   }
   span {
-    color: #e6e6e6;
+    // color: #e6e6e6;
+    color: black;
     font-size: 16px;
     word-break: break-all;
   }
