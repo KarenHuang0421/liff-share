@@ -20,7 +20,6 @@ const getLiff = async () => {
 
   try {
     form.value = await $toggleLogin();
-    step.value = 1;
 
     if (form.value.isFriend) {
       await $toggleShare(
@@ -32,7 +31,7 @@ const getLiff = async () => {
         .then((res) => (msg.value = "success"))
         .catch((e) => (msg.value = "failed"));
 
-        msg.value= 'what'
+        msg.value= 'pass'
 
       setTimeout(() => {
         window.location.href = "https://lin.ee/wMD9Hbf"; //get from https://manager.line.biz/account/{YOUR_OA_LINE_ID}/gainfriends/add-friend-url
